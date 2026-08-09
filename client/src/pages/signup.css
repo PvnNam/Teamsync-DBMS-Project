@@ -1,0 +1,39 @@
+/* ─── Sign Up Extra Styles ───────────────────────────── */
+.signup-card {
+  max-width: 520px;
+}
+
+.signup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+@media (max-width: 480px) {
+  .signup-grid { grid-template-columns: 1fr; }
+}
+
+.signup-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  margin: 18px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.signup-login-link {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.signup-login-link a {
+  color: var(--purple-light);
+  font-weight: 600;
+}
+
+.signup-login-link a:hover { color: var(--cyan); }

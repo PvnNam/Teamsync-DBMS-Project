@@ -1,0 +1,15 @@
+/* App-level utilities — conflicts with SideNav.css main-content handled there */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transition: border-color 0.2s;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-bright);
+}

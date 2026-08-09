@@ -1,0 +1,743 @@
+========================================================================
+                   TEAMSYNC FAKE ACCOUNTS DIRECTORY                     
+                   Total Accounts: 96                    
+========================================================================
+
+[1] USERNAME: admin
+    Password:   admin
+    Email:      admin@teamsync.gg
+    Rank/Role:  System Administrator
+    Active Games: None
+------------------------------------------------------------------------
+[2] USERNAME: pixelpilot
+    Password:   password123
+    Email:      pixelpilot@teamsync.gg
+    Rank/Role:  Pro Player & Team Captain
+    Active Games:
+      - Valorant (342 hrs played)
+        Achievements: Ascendant 2, Team MVP x12, Clutch God
+      - Fortnite (118 hrs played)
+        Achievements: Victory Royale x28, Crown Winner x16, FNCS Qualifier
+      - CS:GO (520 hrs played)
+        Achievements: Global Elite, Ace x9, Major Scrim Winner
+      - Rocket League (210 hrs played)
+        Achievements: Champion II, Golden Goal, Air Dribbler
+------------------------------------------------------------------------
+[3] USERNAME: NovaSkye
+    Password:   password123
+    Email:      novaskye@teamsync.gg
+    Rank/Role:  Fragger Specialist
+    Active Games:
+      - Fortnite (410 hrs played)
+        Achievements: Crown Winner x16, Top 1% Ranked, Solo Cup Champ
+      - Valorant (195 hrs played)
+        Achievements: Diamond 3, First Blood x45
+------------------------------------------------------------------------
+[4] USERNAME: Airborne
+    Password:   password123
+    Email:      airborne@teamsync.gg
+    Rank/Role:  Aerial Defender
+    Active Games:
+      - Rocket League (680 hrs played)
+        Achievements: Grand Champion I, Saves MVP, Ceiling Shot Legend
+------------------------------------------------------------------------
+[5] USERNAME: KRYPT
+    Password:   password123
+    Email:      krypt@teamsync.gg
+    Rank/Role:  Entry Fragger
+    Active Games:
+      - CS:GO (1200 hrs played)
+        Achievements: Faceit Level 10, Pistol Round King, ESEA Premier
+------------------------------------------------------------------------
+[6] USERNAME: Mira
+    Password:   password123
+    Email:      mira@teamsync.gg
+    Rank/Role:  Utility Support
+    Active Games:
+      - CS:GO (850 hrs played)
+        Achievements: Utility Master, Clutch x14, Support of the Year
+------------------------------------------------------------------------
+[7] USERNAME: Volt
+    Password:   password123
+    Email:      volt@teamsync.gg
+    Rank/Role:  Rifle Specialist
+    Active Games:
+      - CS:GO (620 hrs played)
+        Achievements: Top Fragger x20, Faceit Level 9
+------------------------------------------------------------------------
+[8] USERNAME: Sage
+    Password:   password123
+    Email:      sage@teamsync.gg
+    Rank/Role:  Tactical IGL
+    Active Games:
+      - CS:GO (940 hrs played)
+        Achievements: Tactical Genius, Clutch x18, IGL MVP
+------------------------------------------------------------------------
+[9] USERNAME: JettStream
+    Password:   password123
+    Email:      jett@teamsync.gg
+    Rank/Role:  Duelist Main
+    Active Games:
+      - Valorant (780 hrs played)
+        Achievements: Immortal 1, First Blood x82, Radiant Challenger
+------------------------------------------------------------------------
+[10] USERNAME: Luma
+    Password:   password123
+    Email:      luma@teamsync.gg
+    Rank/Role:  Initiator Flex
+    Active Games:
+      - Valorant (490 hrs played)
+        Achievements: Ascendant 3, Assist King, Flash Master
+------------------------------------------------------------------------
+[11] USERNAME: Cipher
+    Password:   password123
+    Email:      cipher@teamsync.gg
+    Rank/Role:  Sentinel Anchor
+    Active Games:
+      - Valorant (530 hrs played)
+        Achievements: Ascendant 1, Flawless x15, Site Lock Down
+------------------------------------------------------------------------
+[12] USERNAME: Orbit
+    Password:   password123
+    Email:      orbit@teamsync.gg
+    Rank/Role:  Flex Marksman
+    Active Games:
+      - Valorant (310 hrs played)
+        Achievements: Diamond 3, Clutch x22
+------------------------------------------------------------------------
+[13] USERNAME: Valkyrie
+    Password:   password123
+    Email:      valkyrie@teamsync.gg
+    Rank/Role:  Overwatch Support
+    Active Games: None
+------------------------------------------------------------------------
+[14] USERNAME: ShadowSniper
+    Password:   password123
+    Email:      shadow@teamsync.gg
+    Rank/Role:  AWP Expert
+    Active Games: None
+------------------------------------------------------------------------
+[15] USERNAME: FrostByte
+    Password:   frost2024
+    Email:      frostbyte@teamsync.gg
+    Rank/Role:  Diamond Duelist
+    Active Games:
+      - Valorant (560 hrs played)
+        Achievements: Diamond 1, Flawless Run x3
+      - CS:GO (280 hrs played)
+        Achievements: Faceit Level 7
+------------------------------------------------------------------------
+[16] USERNAME: NeonRift
+    Password:   neon!888
+    Email:      neonrift@teamsync.gg
+    Rank/Role:  IGL & Coach
+    Active Games:
+      - Valorant (820 hrs played)
+        Achievements: Immortal 2, Coaching Badge, Strategy Master
+      - Rocket League (400 hrs played)
+        Achievements: Diamond III
+------------------------------------------------------------------------
+[17] USERNAME: ZeroKelvin
+    Password:   zero@cold9
+    Email:      zerokelvin@teamsync.gg
+    Rank/Role:  Precision Sniper
+    Active Games:
+      - CS:GO (1450 hrs played)
+        Achievements: Faceit Level 10, Sniper of the Season, HLTV Top 50
+------------------------------------------------------------------------
+[18] USERNAME: BladeRunner
+    Password:   blade4ever
+    Email:      bladerunner@teamsync.gg
+    Rank/Role:  Eco Round Specialist
+    Active Games:
+      - CS:GO (740 hrs played)
+        Achievements: LE, Eco Clutch x31, Deagle God
+      - Valorant (290 hrs played)
+        Achievements: Platinum 2
+------------------------------------------------------------------------
+[19] USERNAME: Pyra
+    Password:   pyra1357
+    Email:      pyra@teamsync.gg
+    Rank/Role:  Aggressive Initiator
+    Active Games:
+      - Valorant (610 hrs played)
+        Achievements: Ascendant 1, Flash Assist King, Initiator MVP
+------------------------------------------------------------------------
+[20] USERNAME: IronLace
+    Password:   ironlace55
+    Email:      ironlace@teamsync.gg
+    Rank/Role:  Defensive Anchor
+    Active Games: None
+------------------------------------------------------------------------
+[21] USERNAME: VexGhost
+    Password:   vexG#009
+    Email:      vexghost@teamsync.gg
+    Rank/Role:  Lurk & Flank Specialist
+    Active Games: None
+------------------------------------------------------------------------
+[22] USERNAME: SkyViper
+    Password:   viper7890
+    Email:      skyviper@teamsync.gg
+    Rank/Role:  Aerial Combat Expert
+    Active Games: None
+------------------------------------------------------------------------
+[23] USERNAME: HexCore
+    Password:   hex@core2
+    Email:      hexcore@teamsync.gg
+    Rank/Role:  Mid-lane Carry
+    Active Games: None
+------------------------------------------------------------------------
+[24] USERNAME: DriftKing
+    Password:   drift!king3
+    Email:      driftking@teamsync.gg
+    Rank/Role:  Grand Champion I
+    Active Games:
+      - Rocket League (1100 hrs played)
+        Achievements: Grand Champion I, Air Dribble God, RLCS Qualifier
+------------------------------------------------------------------------
+[25] USERNAME: Quasar
+    Password:   quas4r99
+    Email:      quasar@teamsync.gg
+    Rank/Role:  Radiant Ranked
+    Active Games:
+      - Valorant (900 hrs played)
+        Achievements: Radiant, Top 500, MVP x40
+------------------------------------------------------------------------
+[26] USERNAME: XenoMark
+    Password:   xeno@11
+    Email:      xenomark@teamsync.gg
+    Rank/Role:  Global Elite
+    Active Games:
+      - CS:GO (1800 hrs played)
+        Achievements: Global Elite, Majors Qualifier, Faceit Level 10
+------------------------------------------------------------------------
+[27] USERNAME: StormPeak
+    Password:   stormP@22
+    Email:      stormpeak@teamsync.gg
+    Rank/Role:  Fortnite Champion
+    Active Games:
+      - Fortnite (680 hrs played)
+        Achievements: Crown Win x55, FNCS Top 10, Box Fight Champion
+------------------------------------------------------------------------
+[28] USERNAME: GlitchKid
+    Password:   g1tchK!d
+    Email:      glitchkid@teamsync.gg
+    Rank/Role:  Bug Hunter & Tactician
+    Active Games: None
+------------------------------------------------------------------------
+[29] USERNAME: Riven
+    Password:   riven2025
+    Email:      riven@teamsync.gg
+    Rank/Role:  Carry Specialist
+    Active Games: None
+------------------------------------------------------------------------
+[30] USERNAME: Spectra
+    Password:   spec!ra77
+    Email:      spectra@teamsync.gg
+    Rank/Role:  Lurk & Info Gatherer
+    Active Games: None
+------------------------------------------------------------------------
+[31] USERNAME: PulseWave
+    Password:   pulse44wave
+    Email:      pulsewave@teamsync.gg
+    Rank/Role:  Support & Flash Specialist
+    Active Games: None
+------------------------------------------------------------------------
+[32] USERNAME: CrimsonEdge
+    Password:   crim$on1
+    Email:      crimsonedge@teamsync.gg
+    Rank/Role:  Entry Fragger — Radiant
+    Active Games:
+      - Valorant (730 hrs played)
+        Achievements: Radiant, Entry King, Clutch Factor
+------------------------------------------------------------------------
+[33] USERNAME: Abyss
+    Password:   abyss_deep
+    Email:      abyss@teamsync.gg
+    Rank/Role:  Controller Main
+    Active Games: None
+------------------------------------------------------------------------
+[34] USERNAME: LiteFuse
+    Password:   lit3fuse!
+    Email:      litefuse@teamsync.gg
+    Rank/Role:  Speed Runner & Rusher
+    Active Games: None
+------------------------------------------------------------------------
+[35] USERNAME: Nimbus
+    Password:   nimbus2026
+    Email:      nimbus@teamsync.gg
+    Rank/Role:  Aerial Freestyle Pro
+    Active Games:
+      - Rocket League (950 hrs played)
+        Achievements: Grand Champion II, Freestyler Pro, Community Cup
+------------------------------------------------------------------------
+[36] USERNAME: KiraX
+    Password:   kirax999
+    Email:      kirax@teamsync.gg
+    Rank/Role:  Clutch Player — Immortal
+    Active Games:
+      - Valorant (670 hrs played)
+        Achievements: Immortal 3, Clutch x60, Map MVP x25
+      - Fortnite (120 hrs played)
+        Achievements: Victory Royale x10
+------------------------------------------------------------------------
+[37] USERNAME: TitanFall
+    Password:   titan@321
+    Email:      titanfall@teamsync.gg
+    Rank/Role:  Hard Entry Fragger
+    Active Games: None
+------------------------------------------------------------------------
+[38] USERNAME: ArcLight
+    Password:   arc!ight77
+    Email:      arclight@teamsync.gg
+    Rank/Role:  Radiant IGL
+    Active Games: None
+------------------------------------------------------------------------
+[39] USERNAME: VoidWalker
+    Password:   v01dW@lk
+    Email:      voidwalker@teamsync.gg
+    Rank/Role:  Lurker Supreme
+    Active Games: None
+------------------------------------------------------------------------
+[40] USERNAME: FluxRider
+    Password:   flux!ride9
+    Email:      fluxrider@teamsync.gg
+    Rank/Role:  Speed Rusher
+    Active Games: None
+------------------------------------------------------------------------
+[41] USERNAME: PrismShot
+    Password:   prism#2026
+    Email:      prismshot@teamsync.gg
+    Rank/Role:  Precision AWPer
+    Active Games: None
+------------------------------------------------------------------------
+[42] USERNAME: CobraStrike
+    Password:   cobr@99
+    Email:      cobrastrike@teamsync.gg
+    Rank/Role:  Aggressive Duelist
+    Active Games: None
+------------------------------------------------------------------------
+[43] USERNAME: NebulaX
+    Password:   neb!x888
+    Email:      nebulax@teamsync.gg
+    Rank/Role:  Champion Flex
+    Active Games: None
+------------------------------------------------------------------------
+[44] USERNAME: Solstice
+    Password:   sol$tice1
+    Email:      solstice@teamsync.gg
+    Rank/Role:  FNCS Qualifier
+    Active Games: None
+------------------------------------------------------------------------
+[45] USERNAME: EchoFlare
+    Password:   ech0fl@re
+    Email:      echoflare@teamsync.gg
+    Rank/Role:  RL Grand Champion III
+    Active Games: None
+------------------------------------------------------------------------
+[46] USERNAME: ReaperX9
+    Password:   reap3r!X9
+    Email:      reaperx9@teamsync.gg
+    Rank/Role:  Global Elite AWP
+    Active Games: None
+------------------------------------------------------------------------
+[47] USERNAME: ViperAce
+    Password:   pass101
+    Email:      viperace@teamsync.gg
+    Rank/Role:  Radiant Sentinel
+    Active Games:
+      - Valorant (820 hrs played)
+        Achievements: Radiant Sentinel, Site Lock Down, Flawless Run x5
+------------------------------------------------------------------------
+[48] USERNAME: PhantomPulse
+    Password:   pulse202
+    Email:      phantompulse@teamsync.gg
+    Rank/Role:  Immortal Duelist
+    Active Games:
+      - Valorant (910 hrs played)
+        Achievements: Immortal 3, First Blood Master, Ace x12
+------------------------------------------------------------------------
+[49] USERNAME: SolarFlare
+    Password:   solar303
+    Email:      solarflare@teamsync.gg
+    Rank/Role:  Apex Champion
+    Active Games:
+      - Fortnite (750 hrs played)
+        Achievements: Crown Winner x40, Solo Cup Champ
+------------------------------------------------------------------------
+[50] USERNAME: LunarBlade
+    Password:   lunar404
+    Email:      lunarblade@teamsync.gg
+    Rank/Role:  Global Elite AWPer
+    Active Games:
+      - CS:GO (1600 hrs played)
+        Achievements: Global Elite, HLTV Top 50, AWP God
+------------------------------------------------------------------------
+[51] USERNAME: AstralKnight
+    Password:   astral505
+    Email:      astralknight@teamsync.gg
+    Rank/Role:  Overwatch Tank
+    Active Games:
+      - Marvel Rivals (430 hrs played)
+        Achievements: Vanguard Master, MVP Award x15
+------------------------------------------------------------------------
+[52] USERNAME: CyberVex
+    Password:   cyber606
+    Email:      cybervex@teamsync.gg
+    Rank/Role:  Initiator Flex
+    Active Games:
+      - Valorant (510 hrs played)
+        Achievements: Ascendant 3, Flash Master
+------------------------------------------------------------------------
+[53] USERNAME: HyperDrift
+    Password:   hyper707
+    Email:      hyperdrift@teamsync.gg
+    Rank/Role:  Grand Champion III
+    Active Games:
+      - Rocket League (1200 hrs played)
+        Achievements: Grand Champion III, Ceiling Shot Legend
+------------------------------------------------------------------------
+[54] USERNAME: NovaStrike
+    Password:   nova808
+    Email:      novastrike@teamsync.gg
+    Rank/Role:  FNCS Finalist
+    Active Games:
+      - Fortnite (890 hrs played)
+        Achievements: FNCS Finalist, Box Fight Champion
+------------------------------------------------------------------------
+[55] USERNAME: Venomous
+    Password:   venom909
+    Email:      venomous@teamsync.gg
+    Rank/Role:  Valorant IGL
+    Active Games:
+      - Valorant (950 hrs played)
+        Achievements: Tactical Genius, Radiant Challenger
+------------------------------------------------------------------------
+[56] USERNAME: ChronoTrigger
+    Password:   chrono10
+    Email:      chronotrigger@teamsync.gg
+    Rank/Role:  Tactical Support
+    Active Games:
+      - CS:GO (1100 hrs played)
+        Achievements: Utility Master, Faceit Level 10
+------------------------------------------------------------------------
+[57] USERNAME: IronClaw
+    Password:   iron1111
+    Email:      ironclaw@teamsync.gg
+    Rank/Role:  CS:GO Anchor
+    Active Games:
+      - CS:GO (870 hrs played)
+        Achievements: Pistol Round King, Major Scrim Winner
+------------------------------------------------------------------------
+[58] USERNAME: ShadowRift
+    Password:   shadow12
+    Email:      shadowrift@teamsync.gg
+    Rank/Role:  Lurker Specialist
+    Active Games:
+      - Valorant (640 hrs played)
+        Achievements: Lurk Master, Clutch God
+------------------------------------------------------------------------
+[59] USERNAME: ThunderBolt
+    Password:   thunder13
+    Email:      thunderbolt@teamsync.gg
+    Rank/Role:  Entry Specialist
+    Active Games:
+      - CS:GO (980 hrs played)
+        Achievements: Entry Fragger, Deagle God
+------------------------------------------------------------------------
+[60] USERNAME: FrostWing
+    Password:   frost144
+    Email:      frostwing@teamsync.gg
+    Rank/Role:  Freestyle Legend
+    Active Games:
+      - Rocket League (840 hrs played)
+        Achievements: Freestyle Legend, Golden Goal
+------------------------------------------------------------------------
+[61] USERNAME: MagmaCore
+    Password:   magma155
+    Email:      magmacore@teamsync.gg
+    Rank/Role:  FNCS Champion
+    Active Games:
+      - Fortnite (1050 hrs played)
+        Achievements: FNCS Champion, Victory Royale x60
+------------------------------------------------------------------------
+[62] USERNAME: ZenithPro
+    Password:   zenith16
+    Email:      zenithpro@teamsync.gg
+    Rank/Role:  Radiant Controller
+    Active Games:
+      - Valorant (780 hrs played)
+        Achievements: Radiant Controller, Team MVP x20
+------------------------------------------------------------------------
+[63] USERNAME: AlphaOmega
+    Password:   alpha177
+    Email:      alphaomega@teamsync.gg
+    Rank/Role:  Team Captain
+    Active Games:
+      - Valorant (1300 hrs played)
+        Achievements: Team Captain, Top 500
+------------------------------------------------------------------------
+[64] USERNAME: Spectral
+    Password:   spect188
+    Email:      spectral@teamsync.gg
+    Rank/Role:  Diamond III Duelist
+    Active Games:
+      - Valorant (420 hrs played)
+        Achievements: Diamond III Duelist
+------------------------------------------------------------------------
+[65] USERNAME: VelocityX
+    Password:   veloc199
+    Email:      velocityx@teamsync.gg
+    Rank/Role:  Speed Runner
+    Active Games:
+      - Rocket League (760 hrs played)
+        Achievements: Speed Runner, Saves MVP
+------------------------------------------------------------------------
+[66] USERNAME: VortexKing
+    Password:   vort2020
+    Email:      vortexking@teamsync.gg
+    Rank/Role:  Grand Champion I
+    Active Games:
+      - Rocket League (1150 hrs played)
+        Achievements: Grand Champion I, Air Dribbler
+------------------------------------------------------------------------
+[67] USERNAME: BlazeFury
+    Password:   blaze211
+    Email:      blazefury@teamsync.gg
+    Rank/Role:  Build Master
+    Active Games:
+      - Fortnite (620 hrs played)
+        Achievements: Build Master, Top 1% Ranked
+------------------------------------------------------------------------
+[68] USERNAME: Krypton99
+    Password:   krypt222
+    Email:      krypton99@teamsync.gg
+    Rank/Role:  AWP God
+    Active Games:
+      - CS:GO (1400 hrs played)
+        Achievements: AWP God, Faceit Level 10
+------------------------------------------------------------------------
+[69] USERNAME: QuantumDash
+    Password:   quant233
+    Email:      quantumdash@teamsync.gg
+    Rank/Role:  Flex Initiator
+    Active Games:
+      - Valorant (590 hrs played)
+        Achievements: Initiator MVP, Flash Assist King
+------------------------------------------------------------------------
+[70] USERNAME: MatrixRebel
+    Password:   matr244
+    Email:      matrixrebel@teamsync.gg
+    Rank/Role:  Rifle Master
+    Active Games:
+      - CS:GO (930 hrs played)
+        Achievements: Rifle Master, Global Elite
+------------------------------------------------------------------------
+[71] USERNAME: PhoenixRise
+    Password:   phoe255
+    Email:      phoenixrise@teamsync.gg
+    Rank/Role:  Immortal 2
+    Active Games:
+      - Valorant (710 hrs played)
+        Achievements: Immortal 2, Clutch Factor
+------------------------------------------------------------------------
+[72] USERNAME: ZeroGravity
+    Password:   zero266
+    Email:      zerogravity@teamsync.gg
+    Rank/Role:  Aerial Pro
+    Active Games:
+      - Rocket League (880 hrs played)
+        Achievements: Aerial Pro, Freestyler
+------------------------------------------------------------------------
+[73] USERNAME: StormRider
+    Password:   storm27
+    Email:      stormrider@teamsync.gg
+    Rank/Role:  Solo Cup Legend
+    Active Games:
+      - Fortnite (790 hrs played)
+        Achievements: Solo Cup Legend, Crown Winner x30
+------------------------------------------------------------------------
+[74] USERNAME: ApexPredator
+    Password:   apex288
+    Email:      apexpredator@teamsync.gg
+    Rank/Role:  Radiant MVP
+    Active Games:
+      - Valorant (1250 hrs played)
+        Achievements: Radiant MVP, Top 100
+------------------------------------------------------------------------
+[75] USERNAME: RogueAgent
+    Password:   rogue29
+    Email:      rogueagent@teamsync.gg
+    Rank/Role:  Faceit Level 10
+    Active Games:
+      - CS:GO (1500 hrs played)
+        Achievements: Faceit Level 10, Major Qualifier
+------------------------------------------------------------------------
+[76] USERNAME: Titanium
+    Password:   titan30
+    Email:      titanium@teamsync.gg
+    Rank/Role:  Sentinel Main
+    Active Games:
+      - Valorant (680 hrs played)
+        Achievements: Site Lock Down, Flawless Run
+------------------------------------------------------------------------
+[77] USERNAME: InfernoX
+    Password:   infer31
+    Email:      infernox@teamsync.gg
+    Rank/Role:  Entry Fragger
+    Active Games:
+      - CS:GO (820 hrs played)
+        Achievements: Entry Fragger, Pistol King
+------------------------------------------------------------------------
+[78] USERNAME: CosmicByte
+    Password:   cosm32
+    Email:      cosmicbyte@teamsync.gg
+    Rank/Role:  Support Specialist
+    Active Games:
+      - Marvel Rivals (360 hrs played)
+        Achievements: Support Specialist, MVP Award
+------------------------------------------------------------------------
+[79] USERNAME: MirageMaster
+    Password:   mira33
+    Email:      miragemaster@teamsync.gg
+    Rank/Role:  Clutch God
+    Active Games:
+      - Valorant (770 hrs played)
+        Achievements: Clutch God, Team MVP
+------------------------------------------------------------------------
+[80] USERNAME: VanguardX
+    Password:   vang34
+    Email:      vanguardx@teamsync.gg
+    Rank/Role:  Marvel Rivals Ace
+    Active Games:
+      - Marvel Rivals (490 hrs played)
+        Achievements: Marvel Rivals Ace, Triple Kill
+------------------------------------------------------------------------
+[81] USERNAME: Overdrive
+    Password:   over35
+    Email:      overdrive@teamsync.gg
+    Rank/Role:  Grand Champion II
+    Active Games:
+      - Rocket League (1020 hrs played)
+        Achievements: Grand Champion II, RLCS Qualifier
+------------------------------------------------------------------------
+[82] USERNAME: SkyBound
+    Password:   skyb36
+    Email:      skybound@teamsync.gg
+    Rank/Role:  FNCS Solo Champ
+    Active Games:
+      - Fortnite (940 hrs played)
+        Achievements: FNCS Solo Champ, Box Fight Legend
+------------------------------------------------------------------------
+[83] USERNAME: LethalEdge
+    Password:   leth37
+    Email:      lethaledge@teamsync.gg
+    Rank/Role:  Global Elite
+    Active Games:
+      - CS:GO (1350 hrs played)
+        Achievements: Global Elite, Ace x15
+------------------------------------------------------------------------
+[84] USERNAME: Oblivion
+    Password:   obli38
+    Email:      oblivion@teamsync.gg
+    Rank/Role:  Immortal 1
+    Active Games:
+      - Valorant (830 hrs played)
+        Achievements: Immortal 1, First Blood Master
+------------------------------------------------------------------------
+[85] USERNAME: RadiantGhost
+    Password:   radi39
+    Email:      radiantghost@teamsync.gg
+    Rank/Role:  Radiant IGL
+    Active Games:
+      - Valorant (1100 hrs played)
+        Achievements: Radiant IGL, Tactical Genius
+------------------------------------------------------------------------
+[86] USERNAME: VelocityPrime
+    Password:   velo40
+    Email:      velocityprime@teamsync.gg
+    Rank/Role:  Rocket League Pro
+    Active Games:
+      - Rocket League (970 hrs played)
+        Achievements: Rocket League Pro, Freestyler Pro
+------------------------------------------------------------------------
+[87] USERNAME: HyperNova
+    Password:   hype41
+    Email:      hypernova@teamsync.gg
+    Rank/Role:  Fortnite Builder
+    Active Games:
+      - Fortnite (860 hrs played)
+        Achievements: Fortnite Builder, Victory Royale x45
+------------------------------------------------------------------------
+[88] USERNAME: CyberKnight
+    Password:   cybe42
+    Email:      cyberknight@teamsync.gg
+    Rank/Role:  CS:GO AWPer
+    Active Games:
+      - CS:GO (1220 hrs played)
+        Achievements: CS:GO AWPer, HLTV Top 50
+------------------------------------------------------------------------
+[89] USERNAME: PhantomStrike
+    Password:   phan43
+    Email:      phantomstrike@teamsync.gg
+    Rank/Role:  Duelist Main
+    Active Games:
+      - Valorant (740 hrs played)
+        Achievements: Duelist Main, Ace x10
+------------------------------------------------------------------------
+[90] USERNAME: ThunderClap
+    Password:   thun44
+    Email:      thunderclap@teamsync.gg
+    Rank/Role:  Initiator Master
+    Active Games:
+      - Valorant (660 hrs played)
+        Achievements: Initiator Master, Flash King
+------------------------------------------------------------------------
+[91] USERNAME: ZeroPoint
+    Password:   zero45
+    Email:      zeropoint@teamsync.gg
+    Rank/Role:  Victory Cup Winner
+    Active Games:
+      - Fortnite (910 hrs played)
+        Achievements: Victory Cup Winner, Crown Winner x25
+------------------------------------------------------------------------
+[92] USERNAME: AlphaStorm
+    Password:   alph46
+    Email:      alphastorm@teamsync.gg
+    Rank/Role:  Apex Champion
+    Active Games:
+      - Fortnite (800 hrs played)
+        Achievements: Apex Champion, FNCS Top 5
+------------------------------------------------------------------------
+[93] USERNAME: VectorPrime
+    Password:   vect47
+    Email:      vectorprime@teamsync.gg
+    Rank/Role:  Faceit Level 9
+    Active Games:
+      - CS:GO (1040 hrs played)
+        Achievements: Faceit Level 9, Utility Master
+------------------------------------------------------------------------
+[94] USERNAME: VortexFlare
+    Password:   vort48
+    Email:      vortexflare@teamsync.gg
+    Rank/Role:  Freestyle God
+    Active Games:
+      - Rocket League (1110 hrs played)
+        Achievements: Freestyle God, Air Dribbler
+------------------------------------------------------------------------
+[95] USERNAME: ApexMaster
+    Password:   apex49
+    Email:      apexmaster@teamsync.gg
+    Rank/Role:  Radiant Top 100
+    Active Games:
+      - Valorant (1400 hrs played)
+        Achievements: Radiant Top 100, Clutch God
+------------------------------------------------------------------------
+[96] USERNAME: OmegaReaper
+    Password:   omeg50
+    Email:      omegareaper@teamsync.gg
+    Rank/Role:  Global Elite
+    Active Games:
+      - CS:GO (1650 hrs played)
+        Achievements: Global Elite, Major Scrim Winner
+------------------------------------------------------------------------

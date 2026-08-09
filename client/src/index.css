@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ─── TOKENS ─────────────────────────────────────────── */
+:root {
+  --bg: #04020e;
+  --bg2: #080414;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface2: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(139, 92, 246, 0.35);
+
+  --purple: #8b5cf6;
+  --purple-light: #a78bfa;
+  --purple-dim: rgba(139, 92, 246, 0.18);
+  --cyan: #22d3ee;
+  --cyan-dim: rgba(34, 211, 238, 0.18);
+  --pink: #f472b6;
+  --green: #4ade80;
+
+  --text: #f1f0ff;
+  --text-muted: #7b7a99;
+  --text-dim: #45435c;
+
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-head: 'Space Grotesk', system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── RESET ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139, 92, 246, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(34, 211, 238, 0.1) 0%, transparent 60%);
+}
+
+#root { min-height: 100dvh; display: flex; flex-direction: column; padding: 0; max-width: 100%; }
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+
+p { line-height: 1.65; color: var(--text-muted); }
+
+a { color: var(--purple-light); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--cyan); }
+
+button, select, input, textarea { font-family: var(--font); }
+
+/* ─── BLACK DROPDOWNS ───────────────────────────────────── */
+select {
+  background: #000 !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  outline: none;
+  cursor: pointer;
+  appearance: auto;
+}
+select:focus {
+  border-color: var(--purple) !important;
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+}
+select option {
+  background: #000;
+  color: var(--text);
+}
+
+/* ─── UTILITIES ──────────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;
+}
+
+.glow-text {
+  background: linear-gradient(135deg, #fff 0%, var(--purple-light) 50%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 999px; font-size: 0.72rem;
+  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--purple-dim); color: var(--purple-light);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.3); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--purple); }
