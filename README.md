@@ -4,30 +4,30 @@
 
 ---
 
-## 🚀 Overview
+##  Overview
 
 **TeamSync** is a modern, high-performance web application designed for gamers across competitive titles including **Valorant**, **Fortnite**, **CS:GO**, **Rocket League**, and **Marvel Rivals**. Powered by a React + Vite frontend and an Express + native SQLite backend, TeamSync delivers a glassmorphic dark-mode interface with live database synchronization.
 
 ---
 
-## ✨ Features & Walkthrough
+##  Features & Walkthrough
 
-### 1. 👤 Dynamic Gamer Profile & Auto-Loading
+### 1.  Dynamic Gamer Profile & Auto-Loading
 - **Dynamic Gamer Tag**: The main header dynamically reflects your `@username`.
 - **Auto-Loading Seeded Profiles**: Type any seeded username (e.g. `NovaSkye`, `DriftKing`, `Quasar`, `Airborne`, `KRYPT`) into the Gamer Tag field or hit **Confirm Username** — the app queries the SQLite database and automatically populates that player's active games, hours played, and achievements in real time!
 - **Confirm Username Button**: Lock in your gamer tag with instant status feedback (`✓ Confirmed`).
 
-### 2. 🖤 Sleek Dark Design & Black Dropdowns
+### 2.  Sleek Dark Design & Black Dropdowns
 - **Glassmorphism Aesthetic**: Rich dark theme with HSL glowing gradients, subtle micro-animations, radial ambient glows, and blurred glass panels.
 - **Custom Black Dropdowns**: Globally styled `<select>` menus with dark backgrounds, contrast option styling, and purple focus rings.
 
-### 3. 🔐 Authentication, Sign Up & Credential Verification
+### 3.  Authentication, Sign Up & Credential Verification
 - **User Registration (`/signup`)**: Two-column sign-up form capturing username, email, password, region, platform, availability, and player role.
 - **Demo Login (`/`)**: Quick login with demo credentials or newly registered accounts.
 - **Password Reset (`/forgot-password`)**: Token-based password recovery workflow.
 - **Credential Verification**: Re-enter password in the Security section of your profile to verify your identity before updating sensitive settings.
 
-### 4. 🏆 Game-Specific Achievements
+### 4.  Game-Specific Achievements
 - **Tailored Achievements**: When managing games on your profile, dropdown selectors present game-specific milestones:
   - **Valorant**: *Radiant Challenger, Immortal 3, Ascendant 2, Clutch God, Team MVP, Flawless Run, Ace x9, Site Lock Down*
   - **Fortnite**: *Victory Royale x28, Crown Winner x16, FNCS Qualifier, Solo Cup Champ, Top 1% Ranked, Box Fight Champion*
@@ -36,16 +36,16 @@
   - **Marvel Rivals**: *Vanguard Master, Triple Kill, MVP Award, Lord of Rivals, Grandmaster*
 - **Custom Achievements**: Option to type and attach custom achievement titles (`+ Custom title…`).
 
-### 5. ⚔️ Custom Squad Creation & Independent Leaving
+### 5.  Custom Squad Creation & Independent Leaving
 - **Create Custom Squads**: On the **My Teams** page, click **`+ Create New Squad`** to create new rosters with custom squad names, tags (e.g. *PHX*, *NS*), games, and mottos.
 - **Multi-Squad Support**: You can create **multiple squads for the exact same game** (e.g. 3 different Valorant rosters).
 - **Independent Squad Leaving**: Every squad has its own unique ID. Clicking **"Leave Squad"** on a team removes **only that specific squad**, leaving your other squads for that game intact.
 
-### 6. 📩 Team Finder & Squad Join Requests
+### 6.  Team Finder & Squad Join Requests
 - **Filterable Listings**: Search open squad listings by game, minimum K/D or wins, region/timezone, platform, and play availability.
 - **Request to Join**: Each team card features a **"Request to Join"** button alongside "View team →". Clicking it updates state to **`✓ Request Sent`**.
 
-### 7. 🔧 Admin-Only Seed Viewer (96 Accounts)
+### 7.  Admin-Only Seed Viewer (96 Accounts)
 - **Restricted Access**: The **Seed Viewer** link is hidden from regular users and accessible **only when logged in as `username: admin`**. Direct URL access (`/dev/seed-viewer`) is guarded by an `AdminRoute`.
 - **Database Directory**: Features a live directory of all **96 seeded fake accounts** with their passwords, email, rank titles, active games, hours, and achievements. Includes a **real-time search filter bar**.
 
@@ -61,7 +61,7 @@
 
 ---
 
-## 📦 Installation & Setup
+##  Installation & Setup
 
 ### Prerequisites
 - **Node.js**: v22.x or higher (for native `node:sqlite` support)
@@ -94,8 +94,8 @@ npm run seed
 
 Output:
 ```
-🌱 Seeding TeamSync SQLite Database...
-✅ Seeded 96 users, 73 game groups, 9 teams, 6 rosters!
+ Seeding TeamSync SQLite Database...
+ Seeded 96 users, 73 game groups, 9 teams, 6 rosters!
 ```
 
 ---
@@ -120,7 +120,7 @@ Open your browser at **`http://localhost:5173`**.
 
 ---
 
-## 🧪 Step-by-Step Testing & Walkthrough Guide
+##  Step-by-Step Testing & Walkthrough Guide
 
 Follow these steps to experience all features:
 
@@ -146,7 +146,7 @@ Follow these steps to experience all features:
 
 ### 4. Test Credential Verification
 1. On the Profile page, scroll to **Security**.
-2. Click **🔐 Verify Identity**.
+2. Click ** Verify Identity**.
 3. Type your password (`password123` or `admin`) and click **Verify Now** ➜ Displays `✓ Credentials verified successfully!`.
 
 ### 5. Test Creating & Leaving Custom Squads
@@ -174,7 +174,7 @@ Follow these steps to experience all features:
 
 ---
 
-## 🔑 Demo & Test Account Directory
+##  Demo & Test Account Directory
 
 Below is a quick reference table of featured seeded accounts for testing:
 
@@ -196,6 +196,6 @@ Below is a quick reference table of featured seeded accounts for testing:
 
 ---
 
-## 📄 License
+##  License
 
 This project is created for **TeamSync (WebWonders 2026)**.
