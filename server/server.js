@@ -338,6 +338,140 @@ app.get('/api/dev/seed-data', (req, res) => {
   res.json(fullUsers);
 });
 
+// DBMS assignment workspace. Identifiers are selected from fixed allowlists;
+// every value supplied by the client remains a bound SQL parameter.
+const dbmsTables = {
+  users: ['id', 'username', 'email', 'rank_title', 'created_at'],
+  teams: ['id', 'name', 'game', 'tag', 'region', 'platform', 'availability', 'wins', 'kd', 'earnings'],
+  user_games: ['id', 'user_id', 'name', 'hours', 'color'],
+  team_members: ['id', 'team_id', 'user_id', 'role', 'online_status'],
+  achievements: ['id', 'user_game_id', 'title'],
+  password_resets: ['id', 'email', 'token', 'created_at']
+};
+
+function timedQuery(sql, ...params) {
+  const start = process.hrtime.bigint();
+  const rows = db.prepare(sql).all(...params);
+  return { rows, executionMs: Number(process.hrtime.bigint() - start) / 1e6 };
+}
+
+function xmlEscape(value) {
+  return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+}
+
+function sendXml(res, rows, root = 'records') {
+  const body = `<?xml version="1.0" encoding="UTF-8"?><${root}>${rows.map(row =>
+    `<record>${Object.entries(row).map(([key, value]) => `<${key}>${xmlEscape(value)}</${key}>`).join('')}</record>`
+  ).join('')}</${root}>`;
+  res.type('application/xml').send(body);
+}
+
+// Saved procedure equivalent for SQLite: a reusable, parameterized JS routine.
+function getTeamMemberDirectory() {
+  return db.prepare('SELECT * FROM team_member_directory ORDER BY team_name, username').all();
+}
+
+app.get('/api/dbms/dashboard', (req, res) => {
+  const counts = Object.fromEntries(Object.keys(dbmsTables).map(table => [table, db.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get().count]));
+  res.json({ counts, total: Object.values(counts).reduce((sum, count) => sum + count, 0) });
+});
+
+app.get('/api/dbms/table/:table', (req, res) => {
+  const table = req.params.table;
+  if (!dbmsTables[table]) return res.status(400).json({ error: 'Unsupported table' });
+  const result = timedQuery(`SELECT ${dbmsTables[table].join(', ')} FROM ${table} ORDER BY id LIMIT 200`);
+  if (req.query.xml === '1') return sendXml(res, result.rows);
+  res.json(result);
+});
+
+app.post('/api/dbms/aggregate', (req, res) => {
+  const { fn = 'COUNT', table = 'teams', column = 'id' } = req.body;
+  if (!['COUNT', 'SUM', 'AVG', 'MIN', 'MAX'].includes(fn) || !dbmsTables[table]?.includes(column)) return res.status(400).json({ error: 'Invalid aggregate selection' });
+  const result = timedQuery(`SELECT ${fn}(${column}) AS result FROM ${table}`);
+  if (req.query.xml === '1') return sendXml(res, result.rows, 'aggregate');
+  res.json(result);
+});
+
+app.post('/api/dbms/filter', (req, res) => {
+  const { table = 'teams', column = 'game', operator = '=', value = '' } = req.body;
+  if (!dbmsTables[table]?.includes(column) || !['=', '!=', '>', '<', '>=', '<=', 'LIKE'].includes(operator)) return res.status(400).json({ error: 'Invalid filter selection' });
+  const result = timedQuery(`SELECT ${dbmsTables[table].join(', ')} FROM ${table} WHERE ${column} ${operator} ? ORDER BY id LIMIT 200`, value);
+  if (req.query.xml === '1') return sendXml(res, result.rows);
+  res.json(result);
+});
+
+app.post('/api/dbms/join', (req, res) => {
+  const { join = 'INNER' } = req.body;
+  if (!['INNER', 'LEFT', 'CROSS'].includes(join)) return res.status(400).json({ error: 'Invalid join type' });
+  const sql = join === 'CROSS'
+    ? 'SELECT t.name AS team_name, u.username FROM teams t CROSS JOIN users u LIMIT 200'
+    : `SELECT t.name AS team_name, t.game, u.username, tm.role FROM teams t ${join} JOIN team_members tm ON tm.team_id = t.id ${join} JOIN users u ON u.id = tm.user_id LIMIT 200`;
+  res.json(timedQuery(sql));
+});
+
+app.post('/api/dbms/subqueries', (req, res) => {
+  const { mode = 'subquery' } = req.body;
+  const sql = mode === 'correlated'
+    ? `SELECT u.id, u.username, u.rank_title FROM users u WHERE EXISTS (SELECT 1 FROM team_members tm JOIN teams t ON t.id = tm.team_id WHERE tm.user_id = u.id AND t.game = ?)`
+    : `SELECT username, rank_title FROM users WHERE id IN (SELECT leader_id FROM teams WHERE game = ?)`;
+  res.json(timedQuery(sql, req.body.game || 'Valorant'));
+});
+
+app.post('/api/dbms/insert-user', (req, res) => {
+  const { username, email, password, rankTitle = 'New Player' } = req.body;
+  if (!username || !email || !password) return res.status(400).json({ error: 'Username, email, and password are required' });
+  try {
+    const start = process.hrtime.bigint();
+    db.prepare('INSERT INTO users (username, email, password, avatar_text, rank_title) VALUES (?, ?, ?, ?, ?)')
+      .run(username, email, password, username[0].toUpperCase(), rankTitle);
+    res.status(201).json({ success: true, executionMs: Number(process.hrtime.bigint() - start) / 1e6 });
+  } catch (error) {
+    res.status(409).json({ error: error.message.includes('UNIQUE') ? 'Username or email already exists' : error.message });
+  }
+});
+
+app.put('/api/dbms/team/:id', (req, res) => {
+  const { name, region, wins, kd } = req.body;
+  const start = process.hrtime.bigint();
+  const result = db.prepare('UPDATE teams SET name = COALESCE(?, name), region = COALESCE(?, region), wins = COALESCE(?, wins), kd = COALESCE(?, kd) WHERE id = ?')
+    .run(name || null, region || null, wins ?? null, kd ?? null, req.params.id);
+  res.json({ success: result.changes > 0, changes: result.changes, executionMs: Number(process.hrtime.bigint() - start) / 1e6 });
+});
+
+app.delete('/api/dbms/team/:id', (req, res) => {
+  const start = process.hrtime.bigint();
+  const result = db.prepare('DELETE FROM teams WHERE id = ?').run(req.params.id);
+  res.json({ success: result.changes > 0, changes: result.changes, executionMs: Number(process.hrtime.bigint() - start) / 1e6 });
+});
+
+app.get('/api/dbms/view', (req, res) => res.json({ rows: getTeamMemberDirectory() }));
+
+app.post('/api/dbms/view', (req, res) => {
+  try {
+    db.prepare('INSERT INTO team_member_directory (team_id, user_id, role, online_status) VALUES (?, ?, ?, ?)')
+      .run(req.body.teamId, req.body.userId, req.body.role || 'Member', req.body.onlineStatus || 'Offline');
+    res.status(201).json({ success: true, rows: getTeamMemberDirectory() });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.post('/api/dbms/benchmark', (req, res) => {
+  const samples = [
+    { query: 'teams game + region filter', index: 'idx_teams_game_region', sql: 'SELECT id, name, game, region FROM teams WHERE game = ? AND region = ?', params: ['Valorant', 'North America'] },
+    { query: 'team roster join lookup', index: 'idx_team_members_team_user', sql: 'SELECT user_id, role FROM team_members WHERE team_id = ?', params: [1] },
+    { query: 'user game lookup', index: 'idx_user_games_user_name', sql: 'SELECT id, name, hours FROM user_games WHERE user_id = ? AND name = ?', params: [1, 'Valorant'] }
+  ];
+  for (const sample of samples) db.exec(`DROP INDEX IF EXISTS ${sample.index}`);
+  const before = samples.map(sample => ({ query: sample.query, index: sample.index, executionMs: timedQuery(sample.sql, ...sample.params).executionMs }));
+  db.exec('CREATE INDEX IF NOT EXISTS idx_teams_game_region ON teams(game, region)');
+  db.exec('CREATE INDEX IF NOT EXISTS idx_team_members_team_user ON team_members(team_id, user_id)');
+  db.exec('CREATE INDEX IF NOT EXISTS idx_user_games_user_name ON user_games(user_id, name)');
+  const after = samples.map(sample => ({ query: sample.query, index: sample.index, executionMs: timedQuery(sample.sql, ...sample.params).executionMs }));
+  res.json({ before, after, analysis: 'Compare each before/after time. Tiny seeded tables and SQLite page caching can make individual measurements noisy.' });
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 TeamSync SQLite Server running on http://localhost:${PORT}`);
 });

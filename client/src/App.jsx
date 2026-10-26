@@ -7,6 +7,7 @@ import Profile from "./pages/profile";
 import Requirements from "./pages/req";
 import Team from "./pages/team";
 import SeedViewer from "./pages/seed-viewer";
+import Dbms from "./pages/dbms";
 
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/LgLayout";
@@ -42,6 +43,7 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/requirements" element={<Requirements />} />
                     <Route path="/team" element={<Team />} />
+                    <Route path="/dbms" element={<Dbms />} />
                     <Route path="/dev/seed-viewer" element={
                         <AdminRoute>
                             <SeedViewer />
