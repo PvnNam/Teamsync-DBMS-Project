@@ -1,4 +1,5 @@
 import db, { initDB } from './db.js';
+import { seedRelationalData } from './relational-seed.js';
 
 console.log('🌱 Seeding TeamSync SQLite Database...');
 
@@ -7,6 +8,10 @@ initDB();
 // Clear existing tables
 db.exec(`
   DELETE FROM password_resets;
+  DELETE FROM notifications;
+  DELETE FROM team_events;
+  DELETE FROM team_applications;
+  DELETE FROM messages;
   DELETE FROM team_members;
   DELETE FROM teams;
   DELETE FROM achievements;
@@ -429,4 +434,6 @@ for (const roster of teamRosters) {
   }
 }
 
-console.log(`✅ Seeded ${usersData.length} users, ${gamesData.length} game groups, ${teamsData.length} teams, ${teamRosters.length} rosters!`);
+seedRelationalData(db);
+
+console.log(`✅ Seeded ${usersData.length} users, ${gamesData.length} game groups, ${teamsData.length} teams, ${teamRosters.length} rosters, plus sample messages, applications, events, notifications, and an expired reset token!`);

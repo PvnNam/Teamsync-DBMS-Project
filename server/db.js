@@ -75,9 +75,108 @@ export function initDB() {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
+    CREATE TABLE IF NOT EXISTS messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      sender_id INTEGER NOT NULL,
+      receiver_id INTEGER NOT NULL,
+      message_text TEXT NOT NULL,
+      sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS team_applications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      team_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Accepted', 'Rejected')),
+      applied_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE (team_id, user_id),
+      FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS team_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      team_id INTEGER NOT NULL,
+      title TEXT NOT NULL,
+      event_date DATETIME NOT NULL,
+      location TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'Scheduled' CHECK (status IN ('Scheduled', 'Completed', 'Cancelled')),
+      FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS notifications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      message TEXT NOT NULL,
+      type TEXT NOT NULL CHECK (type IN ('application', 'message', 'event')),
+      is_read INTEGER NOT NULL DEFAULT 0 CHECK (is_read IN (0, 1)),
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS application_audit_log (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      table_name TEXT NOT NULL,
+      operation TEXT NOT NULL CHECK (operation IN ('INSERT', 'UPDATE', 'DELETE')),
+      row_id INTEGER NOT NULL,
+      changed_by TEXT NOT NULL DEFAULT 'application',
+      changed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      old_values TEXT,
+      new_values TEXT
+    );
+
+    CREATE TRIGGER IF NOT EXISTS teams_audit_insert
+    AFTER INSERT ON teams BEGIN
+      INSERT INTO application_audit_log(table_name, operation, row_id, new_values)
+      VALUES ('teams', 'INSERT', NEW.id,
+        json_object('name', NEW.name, 'game', NEW.game, 'tag', NEW.tag, 'region', NEW.region, 'wins', NEW.wins, 'kd', NEW.kd));
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_validate_insert
+    BEFORE INSERT ON teams BEGIN
+      SELECT CASE WHEN TRIM(NEW.name)='' OR TRIM(NEW.game)=''
+        THEN RAISE(ABORT, 'Team name and game are required') END;
+      SELECT CASE WHEN COALESCE(NEW.wins, 0)<0 OR COALESCE(NEW.kd, 0)<0
+        THEN RAISE(ABORT, 'Wins and K/D must be zero or greater') END;
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_validate_update
+    BEFORE UPDATE ON teams BEGIN
+      SELECT CASE WHEN TRIM(NEW.name)='' OR TRIM(NEW.game)=''
+        THEN RAISE(ABORT, 'Team name and game are required') END;
+      SELECT CASE WHEN COALESCE(NEW.wins, 0)<0 OR COALESCE(NEW.kd, 0)<0
+        THEN RAISE(ABORT, 'Wins and K/D must be zero or greater') END;
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_audit_update
+    AFTER UPDATE ON teams BEGIN
+      INSERT INTO application_audit_log(table_name, operation, row_id, old_values, new_values)
+      VALUES ('teams', 'UPDATE', NEW.id,
+        json_object('name', OLD.name, 'game', OLD.game, 'tag', OLD.tag, 'region', OLD.region, 'wins', OLD.wins, 'kd', OLD.kd),
+        json_object('name', NEW.name, 'game', NEW.game, 'tag', NEW.tag, 'region', NEW.region, 'wins', NEW.wins, 'kd', NEW.kd));
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_audit_delete
+    AFTER DELETE ON teams BEGIN
+      INSERT INTO application_audit_log(table_name, operation, row_id, old_values)
+      VALUES ('teams', 'DELETE', OLD.id,
+        json_object('name', OLD.name, 'game', OLD.game, 'tag', OLD.tag, 'region', OLD.region, 'wins', OLD.wins, 'kd', OLD.kd));
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_uppercase_tag_insert
+    AFTER INSERT ON teams WHEN NEW.tag <> UPPER(NEW.tag) BEGIN
+      UPDATE teams SET tag=UPPER(NEW.tag) WHERE id=NEW.id;
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_uppercase_tag_update
+    AFTER UPDATE OF tag ON teams WHEN NEW.tag <> UPPER(NEW.tag) BEGIN
+      UPDATE teams SET tag=UPPER(NEW.tag) WHERE id=NEW.id;
+    END;
+
     CREATE INDEX IF NOT EXISTS idx_teams_game_region ON teams(game, region);
     CREATE INDEX IF NOT EXISTS idx_team_members_team_user ON team_members(team_id, user_id);
     CREATE INDEX IF NOT EXISTS idx_user_games_user_name ON user_games(user_id, name);
+    CREATE INDEX IF NOT EXISTS idx_messages_sender_sent ON messages(sender_id, sent_at);
+    CREATE INDEX IF NOT EXISTS idx_messages_receiver_sent ON messages(receiver_id, sent_at);
+    CREATE INDEX IF NOT EXISTS idx_team_applications_team_status ON team_applications(team_id, status);
+    CREATE INDEX IF NOT EXISTS idx_team_events_team_date ON team_events(team_id, event_date);
+    CREATE INDEX IF NOT EXISTS idx_notifications_user_read ON notifications(user_id, is_read);
 
     CREATE VIEW IF NOT EXISTS team_member_directory AS
       SELECT t.id AS team_id, t.name AS team_name, t.game, t.region,

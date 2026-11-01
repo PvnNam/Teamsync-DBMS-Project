@@ -46,9 +46,9 @@ export default function Dbms() {
   };
 
   return <main className="dbms-page">
-    <header className="dbms-hero"><p className="dbms-kicker">DATABASE MANAGEMENT SYSTEMS · PRACTICAL 11</p><h1>SQL Operations Studio</h1><p>Run project queries, compare index timing, and inspect the SQLite view and trigger.</p></header>
+    <header className="dbms-hero"><p className="dbms-kicker">DATABASE MANAGEMENT SYSTEMS</p><h1>SQL Operations Studio</h1><p>Run project queries, compare index timing, and inspect the SQLite view and trigger.</p></header>
     <section className="dbms-dashboard"><h2>Database dashboard</h2><div className="dbms-stat-grid">{Object.entries(stats).map(([name, count]) => <article key={name}><span>{name.replace('_', ' ')}</span><strong>{count}</strong><small>records</small></article>)}</div></section>
-    <section className="dbms-panel"><div className="dbms-panel-head"><div><p className="dbms-kicker">CRUD · QUERY 1</p><h2>Display table records</h2></div><label>Table <select value={table} onChange={e => setTable(e.target.value)}>{['teams', 'users', 'user_games', 'achievements', 'team_members', 'password_resets'].map(t => <option key={t}>{t}</option>)}</select></label><button onClick={() => refresh()}>Display all</button><button onClick={downloadXmlForTable}>Display as XML</button></div>
+    <section className="dbms-panel"><div className="dbms-panel-head"><div><p className="dbms-kicker">CRUD · QUERY 1</p><h2>Display table records</h2></div><label>Table <select value={table} onChange={e => setTable(e.target.value)}>{['teams', 'users', 'user_games', 'achievements', 'team_members', 'password_resets', 'messages', 'team_applications', 'team_events', 'notifications'].map(t => <option key={t}>{t}</option>)}</select></label><button onClick={() => refresh()}>Display all</button><button onClick={downloadXmlForTable}>Display as XML</button></div>
       <div className="dbms-table-wrap"><table><thead><tr>{columns.map(col => <th key={col}>{col}</th>)}</tr></thead><tbody>{rows.map((row, i) => <tr key={row.id ?? i}>{columns.map(col => <td key={col}>{String(row[col] ?? '')}</td>)}</tr>)}</tbody></table>{!rows.length && <p className="dbms-empty">No rows to display.</p>}</div>
     </section>
     <div className="dbms-grid">

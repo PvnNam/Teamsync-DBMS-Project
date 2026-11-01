@@ -107,7 +107,13 @@ app.post('/api/auth/reset-password', (req, res) => {
     return res.status(400).json({ error: 'Invalid or expired password reset token' });
   }
 
-  db.prepare('UPDATE users SET password = ? WHERE email = ?').run(newPassword, email);
+  if (Date.now() - new Date(record.created_at).getTime() > 60 * 60 * 1000) {
+    db.prepare('DELETE FROM password_resets WHERE email = ? AND token = ?').run(email, token);
+    return res.status(400).json({ error: 'Invalid or expired password reset token' });
+  }
+
+  const update = db.prepare('UPDATE users SET password = ? WHERE email = ?').run(newPassword, email);
+  if (update.changes === 0) return res.status(404).json({ error: 'No account found with this email address' });
   db.prepare('DELETE FROM password_resets WHERE email = ?').run(email);
 
   res.json({ success: true, message: 'Password updated successfully' });
@@ -346,7 +352,12 @@ const dbmsTables = {
   user_games: ['id', 'user_id', 'name', 'hours', 'color'],
   team_members: ['id', 'team_id', 'user_id', 'role', 'online_status'],
   achievements: ['id', 'user_game_id', 'title'],
-  password_resets: ['id', 'email', 'token', 'created_at']
+  password_resets: ['id', 'email', 'token', 'created_at'],
+  messages: ['id', 'sender_id', 'receiver_id', 'message_text', 'sent_at'],
+  team_applications: ['id', 'team_id', 'user_id', 'status', 'applied_at'],
+  team_events: ['id', 'team_id', 'title', 'event_date', 'location', 'status'],
+  notifications: ['id', 'user_id', 'message', 'type', 'is_read', 'created_at'],
+  application_audit_log: ['id', 'table_name', 'operation', 'row_id', 'changed_by', 'changed_at', 'old_values', 'new_values']
 };
 
 function timedQuery(sql, ...params) {
@@ -383,6 +394,65 @@ app.get('/api/dbms/table/:table', (req, res) => {
   const result = timedQuery(`SELECT ${dbmsTables[table].join(', ')} FROM ${table} ORDER BY id LIMIT 200`);
   if (req.query.xml === '1') return sendXml(res, result.rows);
   res.json(result);
+});
+
+// Cursor-style traversal over a fixed project table, either all at once or in
+// bounded batches. Table/column identifiers stay on the server allowlist.
+app.get('/api/dbms/cursor/:table', (req, res) => {
+  const table = req.params.table;
+  if (!dbmsTables[table]) return res.status(400).json({ error: 'Unsupported table' });
+  const requestedBatch = Number.parseInt(req.query.batchSize, 10);
+  const batchSize = Number.isFinite(requestedBatch) ? Math.min(Math.max(requestedBatch, 1), 500) : null;
+  const started = process.hrtime.bigint();
+  const selectSql = `SELECT ${dbmsTables[table].join(', ')} FROM ${table} ORDER BY id`;
+  let rows;
+  let batches;
+  if (batchSize) {
+    batches = [];
+    const readBatch = db.prepare(`${selectSql} LIMIT ? OFFSET ?`);
+    for (let offset = 0; ; offset += batchSize) {
+      const batch = readBatch.all(batchSize, offset);
+      if (!batch.length) break;
+      batches.push(batch);
+    }
+  } else {
+    rows = db.prepare(selectSql).all();
+  }
+  res.json({
+    mode: batchSize ? 'batched' : 'unlimited',
+    batchSize,
+    batchCount: batchSize ? batches.length : 1,
+    rows: batchSize ? undefined : rows,
+    batches: batchSize ? batches : undefined,
+    rowCount: rows.length,
+    executionMs: Number(process.hrtime.bigint() - started) / 1e6
+  });
+});
+
+// Paginated search supports no filters, game only, region only, or both.
+app.get('/api/dbms/teams/search', (req, res) => {
+  const page = Math.max(Number.parseInt(req.query.page, 10) || 1, 1);
+  const pageSize = Math.min(Math.max(Number.parseInt(req.query.pageSize, 10) || 20, 1), 100);
+  const conditions = [];
+  const params = [];
+  if (typeof req.query.game === 'string' && req.query.game.trim()) {
+    conditions.push('game = ?');
+    params.push(req.query.game.trim());
+  }
+  if (typeof req.query.region === 'string' && req.query.region.trim()) {
+    conditions.push('region = ?');
+    params.push(req.query.region.trim());
+  }
+  const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+  const start = process.hrtime.bigint();
+  const rows = db.prepare(`SELECT id, name, game, tag, region, wins, kd FROM teams ${where} ORDER BY id LIMIT ? OFFSET ?`)
+    .all(...params, pageSize, (page - 1) * pageSize);
+  const total = db.prepare(`SELECT COUNT(*) AS total FROM teams ${where}`).get(...params).total;
+  res.json({ rows, page, pageSize, total, totalPages: Math.ceil(total / pageSize), executionMs: Number(process.hrtime.bigint() - start) / 1e6 });
+});
+
+app.get('/api/dbms/aggregate/wins-by-game', (req, res) => {
+  res.json(timedQuery('SELECT game, COALESCE(SUM(wins), 0) AS totalWins FROM teams GROUP BY game ORDER BY game'));
 });
 
 app.post('/api/dbms/aggregate', (req, res) => {

@@ -122,6 +122,14 @@ Open your browser at **`http://localhost:5173`**.
 
 ##  Step-by-Step Testing & Walkthrough Guide
 
+## DBMS Practical 10: PL/SQL Backend Logic
+
+The Oracle implementation for this practical is in `server/oracle/assignment10_plsql.sql`. It defines transactional CRUD and login procedures for TeamSync accounts and teams, explicit-cursor procedures (unbounded and `BULK COLLECT ... LIMIT`), filtered and unfiltered pagination, ungrouped and grouped wins aggregates, integrity/uppercase/audit triggers, and the Monday 2-4 PM write-window trigger. The script also includes commented DBA setup for separate app, developer, and DBA accounts with role grants; replace the placeholder passwords and run those commands only from an Oracle administrative account.
+
+The running TeamSync app continues to use its existing native SQLite database. Its API has SQLite equivalents for CRUD/login, cursor-style full/batched reads, pagination/search, sums, row validation, uppercase team tags, and modification auditing. SQLite has no PL/SQL engine, explicit database cursors, or statement-level triggers, so those Oracle-specific pieces are demonstrated in the standalone Oracle script rather than executed by the app. The Oracle write-window trigger is included for the assignment and should only be installed in the Oracle assignment schema; it intentionally rejects writes outside its example time window.
+
+You do not need to download anything new to run TeamSync. To execute the PL/SQL script locally, you need an Oracle database (Oracle Database Free is sufficient) and a client such as SQL Developer; installing SQL Developer alone does not provide a database server. Alternatively, run the script in an Oracle-hosted SQL environment that supports PL/SQL. Node.js and npm remain the only app runtime prerequisites.
+
 ## DBMS Practical 11: SQL Operations Studio
 
 Open **SQL Operations** in the app navigation. The page provides display, insert, aggregate, conditional select, join, subquery/correlated query, update, delete, dashboard, XML output, and index timing controls. The API reports measured execution time in milliseconds for data queries and mutations. Run the index comparison several times and record the observed measurements for your report; this is a small seeded dataset, so SQLite cache and machine load can make one-run timings vary.
@@ -163,6 +171,12 @@ UPDATE teams SET name = ?, region = ?, wins = ?, kd = ? WHERE id = ?;
 Indexes are created on `teams(game, region)`, `team_members(team_id, user_id)`, and `user_games(user_id, name)`. The composite teams index page compares the same conditional query before and after index creation. The `team_member_directory` view joins teams, team_members, and users; an `INSTEAD OF INSERT` trigger rejects unknown team/user IDs. `getTeamMemberDirectory()` is the saved JavaScript procedure-style routine for reading that view. SQLite has no stored-procedure feature, so this reusable server routine supplies the equivalent project operation. The page emits XML for A1, A3, and A4.
 
 Foreign-key checks are enabled in the SQLite connection so invalid references are rejected. The insertion form demonstrates the users table's required fields and unique username/email constraints.
+
+### Additional TeamSync tables
+
+The schema also includes `messages` (sender and receiver user foreign keys), `team_applications` (team and applicant foreign keys with a unique team/applicant pair and constrained Pending/Accepted/Rejected status), `team_events` (team foreign key with constrained Scheduled/Completed/Cancelled status), and `notifications` (recipient foreign key, constrained type, and boolean-style `is_read`). These four tables are available in the SQL Operations table selector and their row counts appear in the dashboard. Supporting indexes cover message inbox/outbox ordering, application status by team, upcoming team events, and unread notifications by user.
+
+Sample relational rows are included in the full seed and can be added to an existing database without clearing it by running `cd server && npm run seed:relations`. The sample set includes three messages, three team applications, three events, four notifications, and an expired password-reset example. The additive seeder is idempotent. Password reset tokens expire after one hour.
 
 Follow these steps to experience all features:
 
