@@ -19,6 +19,7 @@ export function initDB() {
       email TEXT UNIQUE NOT NULL,
       avatar_text TEXT,
       rank_title TEXT,
+      role TEXT NOT NULL DEFAULT 'naive' CHECK (role IN ('naive', 'application_developer', 'DBA')),
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -127,6 +128,16 @@ export function initDB() {
       new_values TEXT
     );
 
+    -- Recreate assignment triggers so updates to their rules apply to an
+    -- existing teamsync.db as well as a newly initialized database.
+    DROP TRIGGER IF EXISTS teams_validate_insert;
+    DROP TRIGGER IF EXISTS teams_validate_update;
+    DROP TRIGGER IF EXISTS teams_write_window_delete;
+    DROP TRIGGER IF EXISTS teams_uppercase_tag_insert;
+    DROP TRIGGER IF EXISTS teams_uppercase_tag_update;
+    DROP TRIGGER IF EXISTS teams_uppercase_name_insert;
+    DROP TRIGGER IF EXISTS teams_uppercase_name_update;
+
     CREATE TRIGGER IF NOT EXISTS teams_audit_insert
     AFTER INSERT ON teams BEGIN
       INSERT INTO application_audit_log(table_name, operation, row_id, new_values)
@@ -135,6 +146,10 @@ export function initDB() {
     END;
     CREATE TRIGGER IF NOT EXISTS teams_validate_insert
     BEFORE INSERT ON teams BEGIN
+      SELECT CASE WHEN CAST(strftime('%w','now','localtime') AS INTEGER)<>1
+        OR strftime('%H%M','now','localtime')<'1400'
+        OR strftime('%H%M','now','localtime')>'1600'
+        THEN RAISE(ABORT, 'Team changes are allowed only Monday from 2:00 PM to 4:00 PM') END;
       SELECT CASE WHEN TRIM(NEW.name)='' OR TRIM(NEW.game)=''
         THEN RAISE(ABORT, 'Team name and game are required') END;
       SELECT CASE WHEN COALESCE(NEW.wins, 0)<0 OR COALESCE(NEW.kd, 0)<0
@@ -142,6 +157,10 @@ export function initDB() {
     END;
     CREATE TRIGGER IF NOT EXISTS teams_validate_update
     BEFORE UPDATE ON teams BEGIN
+      SELECT CASE WHEN CAST(strftime('%w','now','localtime') AS INTEGER)<>1
+        OR strftime('%H%M','now','localtime')<'1400'
+        OR strftime('%H%M','now','localtime')>'1600'
+        THEN RAISE(ABORT, 'Team changes are allowed only Monday from 2:00 PM to 4:00 PM') END;
       SELECT CASE WHEN TRIM(NEW.name)='' OR TRIM(NEW.game)=''
         THEN RAISE(ABORT, 'Team name and game are required') END;
       SELECT CASE WHEN COALESCE(NEW.wins, 0)<0 OR COALESCE(NEW.kd, 0)<0
@@ -160,9 +179,24 @@ export function initDB() {
       VALUES ('teams', 'DELETE', OLD.id,
         json_object('name', OLD.name, 'game', OLD.game, 'tag', OLD.tag, 'region', OLD.region, 'wins', OLD.wins, 'kd', OLD.kd));
     END;
+    CREATE TRIGGER IF NOT EXISTS teams_write_window_delete
+    BEFORE DELETE ON teams BEGIN
+      SELECT CASE WHEN CAST(strftime('%w','now','localtime') AS INTEGER)<>1
+        OR strftime('%H%M','now','localtime')<'1400'
+        OR strftime('%H%M','now','localtime')>'1600'
+        THEN RAISE(ABORT, 'Team changes are allowed only Monday from 2:00 PM to 4:00 PM') END;
+    END;
     CREATE TRIGGER IF NOT EXISTS teams_uppercase_tag_insert
     AFTER INSERT ON teams WHEN NEW.tag <> UPPER(NEW.tag) BEGIN
       UPDATE teams SET tag=UPPER(NEW.tag) WHERE id=NEW.id;
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_uppercase_name_insert
+    AFTER INSERT ON teams WHEN NEW.name <> UPPER(NEW.name) BEGIN
+      UPDATE teams SET name=UPPER(NEW.name) WHERE id=NEW.id;
+    END;
+    CREATE TRIGGER IF NOT EXISTS teams_uppercase_name_update
+    AFTER UPDATE OF name ON teams WHEN NEW.name <> UPPER(NEW.name) BEGIN
+      UPDATE teams SET name=UPPER(NEW.name) WHERE id=NEW.id;
     END;
     CREATE TRIGGER IF NOT EXISTS teams_uppercase_tag_update
     AFTER UPDATE OF tag ON teams WHEN NEW.tag <> UPPER(NEW.tag) BEGIN
@@ -197,6 +231,11 @@ export function initDB() {
     END;
   `);
 
+  const userColumns = db.prepare('PRAGMA table_info(users)').all().map(column => column.name);
+  if (!userColumns.includes('role')) {
+    db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'naive'");
+  }
+
   // Make the documented demo account available on a new or unseeded database.
   // `INSERT OR IGNORE` preserves an existing admin account (including a password
   // changed through the reset flow) while ensuring admin/admin works out of box.
@@ -204,6 +243,7 @@ export function initDB() {
     INSERT OR IGNORE INTO users (username, password, email, avatar_text, rank_title)
     VALUES (?, ?, ?, ?, ?)
   `).run('admin', 'admin', 'admin@teamsync.gg', 'A', 'System Administrator');
+  db.prepare("UPDATE users SET role='DBA' WHERE username='admin'").run();
 }
 
 export default db;

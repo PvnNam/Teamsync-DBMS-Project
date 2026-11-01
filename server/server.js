@@ -18,7 +18,7 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(400).json({ error: 'Username and password are required' });
   }
 
-  const user = db.prepare('SELECT id, username, password, email, avatar_text, rank_title FROM users WHERE username = ? OR email = ?').get(username, username);
+  const user = db.prepare('SELECT id, username, password, email, avatar_text, rank_title, role FROM users WHERE username = ? OR email = ?').get(username, username);
 
   if (!user || user.password !== password) {
     return res.status(401).json({ error: 'Invalid username or password' });
@@ -31,7 +31,8 @@ app.post('/api/auth/login', (req, res) => {
       username: user.username,
       email: user.email,
       avatarText: user.avatar_text,
-      rankTitle: user.rank_title
+      rankTitle: user.rank_title,
+      role: user.role
     }
   });
 });
@@ -295,18 +296,18 @@ app.post('/api/teams', (req, res) => {
   const user = db.prepare('SELECT id FROM users WHERE username = ?').get(currentUser);
   const leaderId = user ? user.id : 1;
 
-  const info = db.prepare(`
-    INSERT INTO teams (name, game, tag, color, region, timezone, platform, availability, members, note, wins, kd, rank, earnings, leader_id)
-    VALUES (?, ?, ?, ?, 'Global', 'UTC', 'Cross-platform', 'Flexible', '1 / 5', ?, 0, 1.0, null, 0, ?)
-  `).run(name, game, tagVal, colorVal, description || `New squad for ${game}.`, leaderId);
-
-  const newTeamId = info.lastInsertRowid;
-
-  // Add the user to team_members
-  db.prepare(`
-    INSERT INTO team_members (team_id, user_id, role, online_status)
-    VALUES (?, ?, 'You · Captain', 'Online now')
-  `).run(newTeamId, leaderId);
+  const newTeamId = withTransaction(() => {
+    const info = db.prepare(`
+      INSERT INTO teams (name, game, tag, color, region, timezone, platform, availability, members, note, wins, kd, rank, earnings, leader_id)
+      VALUES (?, ?, ?, ?, 'Global', 'UTC', 'Cross-platform', 'Flexible', '1 / 5', ?, 0, 1.0, null, 0, ?)
+    `).run(name, game, tagVal, colorVal, description || `New squad for ${game}.`, leaderId);
+    const id = Number(info.lastInsertRowid);
+    db.prepare(`
+      INSERT INTO team_members (team_id, user_id, role, online_status)
+      VALUES (?, ?, 'You · Captain', 'Online now')
+    `).run(id, leaderId);
+    return id;
+  });
 
   res.json({
     success: true,
@@ -347,7 +348,7 @@ app.get('/api/dev/seed-data', (req, res) => {
 // DBMS assignment workspace. Identifiers are selected from fixed allowlists;
 // every value supplied by the client remains a bound SQL parameter.
 const dbmsTables = {
-  users: ['id', 'username', 'email', 'rank_title', 'created_at'],
+  users: ['id', 'username', 'email', 'rank_title', 'role', 'created_at'],
   teams: ['id', 'name', 'game', 'tag', 'region', 'platform', 'availability', 'wins', 'kd', 'earnings'],
   user_games: ['id', 'user_id', 'name', 'hours', 'color'],
   team_members: ['id', 'team_id', 'user_id', 'role', 'online_status'],
@@ -359,11 +360,30 @@ const dbmsTables = {
   notifications: ['id', 'user_id', 'message', 'type', 'is_read', 'created_at'],
   application_audit_log: ['id', 'table_name', 'operation', 'row_id', 'changed_by', 'changed_at', 'old_values', 'new_values']
 };
+const numericDbmsColumns = {
+  users: ['id'], teams: ['id', 'wins', 'kd', 'earnings'], user_games: ['id', 'user_id', 'hours'],
+  team_members: ['id', 'team_id', 'user_id'], achievements: ['id', 'user_game_id'],
+  password_resets: ['id'], messages: ['id', 'sender_id', 'receiver_id'],
+  team_applications: ['id', 'team_id', 'user_id'], team_events: ['id', 'team_id'],
+  notifications: ['id', 'user_id', 'is_read'], application_audit_log: ['id', 'row_id']
+};
 
 function timedQuery(sql, ...params) {
   const start = process.hrtime.bigint();
   const rows = db.prepare(sql).all(...params);
   return { rows, executionMs: Number(process.hrtime.bigint() - start) / 1e6 };
+}
+
+function withTransaction(work) {
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    const result = work();
+    db.exec('COMMIT');
+    return result;
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
 }
 
 function xmlEscape(value) {
@@ -457,10 +477,19 @@ app.get('/api/dbms/aggregate/wins-by-game', (req, res) => {
 
 app.post('/api/dbms/aggregate', (req, res) => {
   const { fn = 'COUNT', table = 'teams', column = 'id' } = req.body;
-  if (!['COUNT', 'SUM', 'AVG', 'MIN', 'MAX'].includes(fn) || !dbmsTables[table]?.includes(column)) return res.status(400).json({ error: 'Invalid aggregate selection' });
+  if (!['COUNT', 'SUM', 'AVG', 'MIN', 'MAX'].includes(fn) || !dbmsTables[table]?.includes(column)
+    || (fn !== 'COUNT' && !numericDbmsColumns[table]?.includes(column))) return res.status(400).json({ error: 'Invalid aggregate selection' });
   const result = timedQuery(`SELECT ${fn}(${column}) AS result FROM ${table}`);
   if (req.query.xml === '1') return sendXml(res, result.rows, 'aggregate');
   res.json(result);
+});
+
+app.post('/api/dbms/aggregate/grouped', (req, res) => {
+  const { table = 'teams', column = 'wins', groupBy = 'game' } = req.body;
+  if (!numericDbmsColumns[table]?.includes(column) || !dbmsTables[table]?.includes(groupBy)) {
+    return res.status(400).json({ error: 'Select a numeric column and a valid grouping column' });
+  }
+  res.json(timedQuery(`SELECT ${groupBy}, SUM(${column}) AS result FROM ${table} GROUP BY ${groupBy} ORDER BY ${groupBy}`));
 });
 
 app.post('/api/dbms/filter', (req, res) => {
@@ -499,6 +528,59 @@ app.post('/api/dbms/insert-user', (req, res) => {
   } catch (error) {
     res.status(409).json({ error: error.message.includes('UNIQUE') ? 'Username or email already exists' : error.message });
   }
+});
+
+// SQLite stored-procedure equivalents for account CRUD. Login itself is
+// handled by /api/auth/login and accepts either username or email.
+app.get('/api/dbms/account/:id', (req, res) => {
+  const user = db.prepare('SELECT id, username, email, avatar_text, rank_title, role, created_at FROM users WHERE id = ?')
+    .get(Number(req.params.id));
+  if (!user) return res.status(404).json({ error: 'Account not found' });
+  res.json(user);
+});
+
+app.post('/api/dbms/account', (req, res) => {
+  const { username, email, password, rankTitle = 'Player', role = 'naive' } = req.body;
+  if (![username, email, password].every(value => typeof value === 'string' && value.trim())) {
+    return res.status(400).json({ error: 'Username, email, and password are required' });
+  }
+  if (!['naive', 'application_developer', 'DBA'].includes(role)) {
+    return res.status(400).json({ error: 'Role must be naive, application_developer, or DBA' });
+  }
+  try {
+    const started = process.hrtime.bigint();
+    const info = withTransaction(() => db.prepare(
+      'INSERT INTO users (username, email, password, avatar_text, rank_title, role) VALUES (?, ?, ?, ?, ?, ?)'
+    ).run(username.trim(), email.trim(), password, username.trim()[0].toUpperCase(), rankTitle, role));
+    res.status(201).json({ success: true, id: Number(info.lastInsertRowid), executionMs: Number(process.hrtime.bigint() - started) / 1e6 });
+  } catch (error) {
+    res.status(error.message.includes('UNIQUE') ? 409 : 400).json({ error: error.message.includes('UNIQUE') ? 'Username or email already exists' : error.message });
+  }
+});
+
+app.put('/api/dbms/account/:id', (req, res) => {
+  const { username, email, password, rankTitle, role } = req.body;
+  if (role !== undefined && !['naive', 'application_developer', 'DBA'].includes(role)) {
+    return res.status(400).json({ error: 'Role must be naive, application_developer, or DBA' });
+  }
+  const id = Number(req.params.id);
+  try {
+    const result = withTransaction(() => db.prepare(`
+      UPDATE users SET username=COALESCE(?, username), email=COALESCE(?, email),
+        password=COALESCE(?, password), rank_title=COALESCE(?, rank_title), role=COALESCE(?, role)
+      WHERE id=?
+    `).run(username?.trim() || null, email?.trim() || null, password || null, rankTitle || null, role || null, id));
+    if (!result.changes) return res.status(404).json({ error: 'Account not found' });
+    res.json({ success: true, changes: result.changes });
+  } catch (error) {
+    res.status(error.message.includes('UNIQUE') ? 409 : 400).json({ error: error.message.includes('UNIQUE') ? 'Username or email already exists' : error.message });
+  }
+});
+
+app.delete('/api/dbms/account/:id', (req, res) => {
+  const result = withTransaction(() => db.prepare('DELETE FROM users WHERE id=?').run(Number(req.params.id)));
+  if (!result.changes) return res.status(404).json({ error: 'Account not found' });
+  res.json({ success: true, changes: result.changes });
 });
 
 app.put('/api/dbms/team/:id', (req, res) => {
@@ -540,6 +622,13 @@ app.post('/api/dbms/benchmark', (req, res) => {
   db.exec('CREATE INDEX IF NOT EXISTS idx_user_games_user_name ON user_games(user_id, name)');
   const after = samples.map(sample => ({ query: sample.query, index: sample.index, executionMs: timedQuery(sample.sql, ...sample.params).executionMs }));
   res.json({ before, after, analysis: 'Compare each before/after time. Tiny seeded tables and SQLite page caching can make individual measurements noisy.' });
+});
+
+app.use((error, req, res, next) => {
+  if (res.headersSent) return next(error);
+  const message = error?.message || 'Database operation failed';
+  const status = message.includes('Team changes are allowed only Monday') ? 403 : 400;
+  res.status(status).json({ error: message });
 });
 
 app.listen(PORT, () => {
