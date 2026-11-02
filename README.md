@@ -1,4 +1,4 @@
-# ✦ TeamSync (WebWonders 2026)
+# ✦ TeamSync 
 
 > **The ultimate platform for competitive gamers to find squads, build rosters, track achievements, and sync play schedules.**
 
