@@ -122,6 +122,62 @@ Open your browser at **`http://localhost:5173`**.
 
 ##  Step-by-Step Testing & Walkthrough Guide
 
+## DBMS Practical 10: PL/SQL Backend Logic
+
+The SQLite implementation is part of the running API. Account CRUD is available under `/api/dbms/account`; login uses `/api/auth/login`; account rows carry `naive`, `application_developer`, or `DBA` roles. Teams support create/update/delete APIs, cursor-style reads through `/api/dbms/cursor/teams` (add `?batchSize=100` for bounded batches), paginated search through `/api/dbms/teams/search`, ungrouped sums through `/api/dbms/aggregate`, and grouped sums through `/api/dbms/aggregate/grouped` (or the wins-by-game shortcut).
+
+SQLite triggers enforce team name/game and nonnegative wins/K/D rules, uppercase team names and tags, write an audit record for team insert/update/delete, and reject team changes except Monday 2-4 PM local time. SQLite does not have PL/SQL, explicit SQL cursors, or statement-level triggers; the API implements cursor-style iteration and SQLite uses row triggers for uppercase normalization. The Oracle reference version remains in `server/oracle/assignment10_plsql.sql` if you later need it.
+
+SQLite role values demonstrate the requested account categories, but they are application data rather than database-enforced user privileges. The Monday write trigger deliberately blocks changes to `teams` outside its stated window, so team edits, inserts, deletes, and seed operations must run during that window. No additional database download is required to run this SQLite implementation.
+
+## DBMS Practical 11: SQL Operations Studio
+
+Open **SQL Operations** in the app navigation. The page provides display, insert, aggregate, conditional select, join, subquery/correlated query, update, delete, dashboard, XML output, and index timing controls. The API reports measured execution time in milliseconds for data queries and mutations. Run the index comparison several times and record the observed measurements for your report; this is a small seeded dataset, so SQLite cache and machine load can make one-run timings vary.
+
+Representative SQL used by the operations page:
+
+```sql
+-- A1: display all data from a main table
+SELECT id, name, game, tag, region, wins, kd FROM teams;
+
+-- A2: insert while honoring NOT NULL and UNIQUE constraints
+INSERT INTO users (username, email, password, avatar_text, rank_title)
+VALUES (?, ?, ?, ?, ?);
+
+-- A3: aggregate result
+SELECT COUNT(id) AS result FROM teams;
+
+-- A4: conditional selection
+SELECT id, name, game, region FROM teams WHERE game = ?;
+
+-- A5: join two related tables
+SELECT t.name, u.username, tm.role FROM teams t
+JOIN team_members tm ON tm.team_id = t.id
+JOIN users u ON u.id = tm.user_id;
+
+-- A6: subquery across teams and users
+SELECT username FROM users
+WHERE id IN (SELECT leader_id FROM teams WHERE game = ?);
+
+-- A7: correlated query across users, team_members, and teams
+SELECT u.username FROM users u
+WHERE EXISTS (SELECT 1 FROM team_members tm JOIN teams t ON t.id = tm.team_id
+              WHERE tm.user_id = u.id AND t.game = ?);
+
+-- A8: update a team row
+UPDATE teams SET name = ?, region = ?, wins = ?, kd = ? WHERE id = ?;
+```
+
+Indexes are created on `teams(game, region)`, `team_members(team_id, user_id)`, and `user_games(user_id, name)`. The composite teams index page compares the same conditional query before and after index creation. The `team_member_directory` view joins teams, team_members, and users; an `INSTEAD OF INSERT` trigger rejects unknown team/user IDs. `getTeamMemberDirectory()` is the saved JavaScript procedure-style routine for reading that view. SQLite has no stored-procedure feature, so this reusable server routine supplies the equivalent project operation. The page emits XML for A1, A3, and A4.
+
+Foreign-key checks are enabled in the SQLite connection so invalid references are rejected. The insertion form demonstrates the users table's required fields and unique username/email constraints.
+
+### Additional TeamSync tables
+
+The schema also includes `messages` (sender and receiver user foreign keys), `team_applications` (team and applicant foreign keys with a unique team/applicant pair and constrained Pending/Accepted/Rejected status), `team_events` (team foreign key with constrained Scheduled/Completed/Cancelled status), and `notifications` (recipient foreign key, constrained type, and boolean-style `is_read`). These four tables are available in the SQL Operations table selector and their row counts appear in the dashboard. Supporting indexes cover message inbox/outbox ordering, application status by team, upcoming team events, and unread notifications by user.
+
+Sample relational rows are included in the full seed and can be added to an existing database without clearing it by running `cd server && npm run seed:relations`. The sample set includes three messages, three team applications, three events, four notifications, and an expired password-reset example. The additive seeder is idempotent. Password reset tokens expire after one hour.
+
 Follow these steps to experience all features:
 
 ### 1. Test Authentication & Sign Up
